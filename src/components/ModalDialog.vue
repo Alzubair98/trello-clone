@@ -5,6 +5,7 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center backdrop-blur-sm justify-center"
     role="dialog"
     aria-modal="true"
+    ref="modalElement"
   >
     <div class="bg-white p-5 rounded max-w-md w-full">
       <h2 class="text-xl font-bold mb-4">Add New Card</h2>
@@ -41,6 +42,7 @@
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
+import { useFocusTrap } from '@vueuse/integrations'
 
 const props = defineProps<{ isOpen: boolean }>()
 const emit = defineEmits<{ (e: 'close'): void }>()
@@ -51,8 +53,14 @@ watch(
   () => props.isOpen,
   (isOpen) => {
     if (isOpen) {
+      activate()
       setTimeout(() => titleInput.value?.focus(), 0)
+    } else {
+      deactivate()
     }
   },
 )
+
+const modalElement = ref<HTMLDivElement | null>(null)
+const { activate, deactivate } = useFocusTrap(modalElement)
 </script>
