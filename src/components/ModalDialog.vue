@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { useFocusTrap } from '@vueuse/integrations'
 
 const props = defineProps<{ isOpen: boolean }>()
@@ -51,10 +51,11 @@ const titleInput = ref<HTMLInputElement | null>(null)
 
 watch(
   () => props.isOpen,
-  (isOpen) => {
+  async (isOpen) => {
     if (isOpen) {
+      await nextTick()
       activate()
-      setTimeout(() => titleInput.value?.focus(), 0)
+      titleInput.value?.focus()
     } else {
       deactivate()
     }
