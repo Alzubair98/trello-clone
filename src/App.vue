@@ -2,7 +2,7 @@
   <main class="p-5 font-sans">
     <div class="flex gap-5 py-5 overflow-x-auto">
       <div
-        v-for="list in lists"
+        v-for="(list, listIndex) in lists"
         :key="list.id"
         class="bg-gray-100 p-3 rounded-lg flex min-w-[250px] flex-col"
       >
@@ -10,7 +10,10 @@
 
         <Draggable :list="list.cards" group="cards" item-key="id">
           <template #item="{ element }">
-            <div class="bg-white p-2 my-2 rounded shadow cursor-grab">
+            <div
+              @click="openModal(listIndex, element)"
+              class="bg-white p-2 my-2 rounded shadow cursor-grab"
+            >
               <span class="text-sm font-medium">{{ element.title }}</span>
               <p class="text-xs text-gray-400">{{ element.description }}</p>
             </div>
@@ -18,7 +21,7 @@
         </Draggable>
 
         <button
-          @click="openModal"
+          @click="openModal(listIndex)"
           class="w-full bg-transparent rounded hover:bg-white text-gray-500 p-2 text-left mt-2 text-sm font-medium"
         >
           + Add Card
@@ -26,15 +29,21 @@
       </div>
     </div>
 
-    <ModalDialog :isOpen="isModalOpen" @close="closeModel" />
+    <ModalDialog
+      :isOpen="isModalOpen"
+      @save="saveCard"
+      @close="closeModel"
+      :mode="modalMode"
+      :card="editingCard"
+    />
   </main>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import Draggable from 'vuedraggable'
 import ModalDialog from './components/ModalDialog.vue'
-import type { List } from './types'
+import type { Card, List } from './types'
 
 const lists = reactive<List[]>([
   {
@@ -61,12 +70,40 @@ const lists = reactive<List[]>([
 ])
 
 const isModalOpen = ref<boolean>(false)
+const editingCard = ref<Card | null>(null)
+const editingListIndex = ref<number | null>(null)
 
-const openModal = () => {
+const modalMode = computed(() => (editingCard.value === null ? 'add' : 'edit'))
+
+const openModal = (listIndex: number, card?: Card) => {
+  editingListIndex.value = listIndex
+  editingCard.value = card === undefined ? null : card
   isModalOpen.value = true
+}
+
+const saveCard = (card: Card) => {
+  if (editingListIndex.value === null) {
+    return
+  }
+  if (modalMode.value === 'add') {
+    // adding card
+    const newId = Math.max(...lists.flatMap((list) => list.cards.map((c) => c.id)))
+    lists[editingListIndex.value].cards.push({ ...card, id: newId })
+  } else {
+    // modify card
+    const cardIndex = lists[editingListIndex.value].cards.findIndex(
+      (cardOnList) => cardOnList.id === card.id,
+    )
+    if (cardIndex != -1) {
+      lists[editingListIndex.value].cards[cardIndex] = card
+    }
+  }
+  closeModel()
 }
 
 const closeModel = () => {
   isModalOpen.value = false
+  editingListIndex.value = null
+  editingCard.value = null
 }
 </script>
