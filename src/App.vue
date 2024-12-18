@@ -29,60 +29,21 @@
       </div>
     </div>
 
-    <ModalDialog
-      :isOpen="isModalOpen"
-      @save="saveCard"
-      @close="closeModel"
-      :mode="modalMode"
-      :card="editingCard"
-    />
+    <ModalDialog />
   </main>
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
 import Draggable from 'vuedraggable'
 import ModalDialog from './components/ModalDialog.vue'
-import type { Card, List } from './types'
+import type { Card } from './types'
 import { useTrelloStore } from './stores/trello'
 
 const trelloStore = useTrelloStore()
 
-const isModalOpen = ref<boolean>(false)
-const editingCard = ref<Card | null>(null)
-const editingListIndex = ref<number | null>(null)
-
-const modalMode = computed(() => (editingCard.value === null ? 'add' : 'edit'))
-
 const openModal = (listIndex: number, card?: Card) => {
-  editingListIndex.value = listIndex
-  editingCard.value = card === undefined ? null : card
-  isModalOpen.value = true
-}
-
-const saveCard = (card: Card) => {
-  if (editingListIndex.value === null) {
-    return
-  }
-  if (modalMode.value === 'add') {
-    // adding card
-    const newId = Math.max(...trelloStore.lists.flatMap((list) => list.cards.map((c) => c.id)))
-    trelloStore.lists[editingListIndex.value].cards.push({ ...card, id: newId })
-  } else {
-    // modify card
-    const cardIndex = trelloStore.lists[editingListIndex.value].cards.findIndex(
-      (cardOnList) => cardOnList.id === card.id,
-    )
-    if (cardIndex != -1) {
-      trelloStore.lists[editingListIndex.value].cards[cardIndex] = card
-    }
-  }
-  closeModel()
-}
-
-const closeModel = () => {
-  isModalOpen.value = false
-  editingListIndex.value = null
-  editingCard.value = null
+  trelloStore.editingListIndex = listIndex
+  trelloStore.editingCard = card === undefined ? null : card
+  trelloStore.isModalOpen = true
 }
 </script>
