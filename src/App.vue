@@ -2,7 +2,7 @@
   <main class="p-5 font-sans">
     <div class="flex gap-5 py-5 overflow-x-auto">
       <div
-        v-for="(list, listIndex) in lists"
+        v-for="(list, listIndex) in trelloStore.lists"
         :key="list.id"
         class="bg-gray-100 p-3 rounded-lg flex min-w-[250px] flex-col"
       >
@@ -44,30 +44,9 @@ import { computed, reactive, ref } from 'vue'
 import Draggable from 'vuedraggable'
 import ModalDialog from './components/ModalDialog.vue'
 import type { Card, List } from './types'
+import { useTrelloStore } from './stores/trello'
 
-const lists = reactive<List[]>([
-  {
-    id: 1,
-    title: 'To Do',
-    cards: [
-      { id: 1, title: 'Task 1', description: 'Description for Task 1' },
-      { id: 2, title: 'Task 2', description: 'Description for Task 2' },
-    ],
-  },
-  {
-    id: 2,
-    title: 'In Progress',
-    cards: [
-      { id: 3, title: 'Task 3', description: 'Description for Task 3' },
-      { id: 4, title: 'Task 4', description: 'Description for Task 4' },
-    ],
-  },
-  {
-    id: 3,
-    title: 'Done',
-    cards: [{ id: 5, title: 'Task 5', description: 'Description for Task 5' }],
-  },
-])
+const trelloStore = useTrelloStore()
 
 const isModalOpen = ref<boolean>(false)
 const editingCard = ref<Card | null>(null)
@@ -87,15 +66,15 @@ const saveCard = (card: Card) => {
   }
   if (modalMode.value === 'add') {
     // adding card
-    const newId = Math.max(...lists.flatMap((list) => list.cards.map((c) => c.id)))
-    lists[editingListIndex.value].cards.push({ ...card, id: newId })
+    const newId = Math.max(...trelloStore.lists.flatMap((list) => list.cards.map((c) => c.id)))
+    trelloStore.lists[editingListIndex.value].cards.push({ ...card, id: newId })
   } else {
     // modify card
-    const cardIndex = lists[editingListIndex.value].cards.findIndex(
+    const cardIndex = trelloStore.lists[editingListIndex.value].cards.findIndex(
       (cardOnList) => cardOnList.id === card.id,
     )
     if (cardIndex != -1) {
-      lists[editingListIndex.value].cards[cardIndex] = card
+      trelloStore.lists[editingListIndex.value].cards[cardIndex] = card
     }
   }
   closeModel()
