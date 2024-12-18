@@ -53,6 +53,7 @@ import type { Card } from '../types'
 import { useTrelloStore } from '../stores/trello'
 
 const trelloStore = useTrelloStore()
+
 const titleInput = ref<HTMLInputElement | null>(null)
 const modalElement = ref<HTMLDivElement | null>(null)
 const localCard = ref<Card>({ id: 0, title: '', description: '' })
