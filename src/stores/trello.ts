@@ -3,8 +3,26 @@ import type { Card, List } from '../types'
 import { reactive, ref, computed } from 'vue'
 
 export const useTrelloStore = defineStore('trello', () => {
+  // default data
+  const defaultLists: List[] = [
+    {
+      id: 1,
+      title: 'To Do',
+      cards: [],
+    },
+    {
+      id: 2,
+      title: 'In Progress',
+      cards: [],
+    },
+    {
+      id: 3,
+      title: 'Done',
+      cards: [],
+    },
+  ]
   // variables
-  const lists = ref<List[]>([])
+  const lists = ref<List[]>(defaultLists)
 
   const isModalOpen = ref<boolean>(false)
 

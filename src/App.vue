@@ -1,6 +1,9 @@
 <template>
   <main class="p-5 font-sans">
-    <div class="flex-col md:flex-row flex gap-5 py-5 overflow-x-auto">
+    <div
+      class="flex-col md:flex-row flex gap-5 py-5 overflow-x-auto"
+      v-if="trelloStore.lists.length > 0"
+    >
       <div
         v-for="(list, listIndex) in trelloStore.lists"
         :key="list.id"
@@ -38,6 +41,7 @@
         </button>
       </div>
     </div>
+    <div v-else><h1>no local storage</h1></div>
 
     <ModalDialog />
   </main>
