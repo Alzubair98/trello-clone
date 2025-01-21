@@ -13,21 +13,26 @@
 
         <Draggable :list="list.cards" group="cards" item-key="id">
           <template #item="{ element }">
-            <div
-              class="bg-white p-2 my-2 rounded shadow cursor-grab flex justify-between"
-              @click.self="openModal(listIndex, element)"
-            >
-              <div @click="openModal(listIndex, element)">
-                <span class="text-sm font-medium">{{ element.title }}</span>
-                <p class="text-xs text-gray-400">{{ element.description }}</p>
-              </div>
-              <div>
-                <button
+            <div class="flex flex-col bg-white my-2 p-2 rounded shadow justify-between">
+              <div
+                class="cursor-grab flex justify-between"
+                @click.self="openModal(listIndex, element)"
+              >
+                <div @click="openModal(listIndex, element)">
+                  <span class="text-sm font-medium">{{ element.title }}</span>
+                  <p class="text-xs text-gray-400">{{ element.description }}</p>
+                </div>
+                <div>
+                  <!-- <button
                   @click.self="console.log('delete')"
                   class="border rounded bg-red-400 text-white hover:bg-red-500 w-5"
                 >
                   X
-                </button>
+                </button> -->
+                </div>
+              </div>
+              <div class="text-sm mt-2 text-gray-400" @click.self="openModal(listIndex, element)">
+                Created at {{ element.date ? element.date : 'No date available' }}
               </div>
             </div>
           </template>

@@ -44,8 +44,13 @@ export const useTrelloStore = defineStore('trello', () => {
     }
     if (modalMode.value === 'add') {
       // adding card
-      const newId = Math.max(...lists.value.flatMap((list) => list.cards.map((c) => c.id)))
-      lists.value[editingListIndex.value].cards.push({ ...card, id: newId })
+      const newId = Math.max(...lists.value.flatMap((list) => list.cards.map((c) => c.id))) + 1
+      const newCard = {
+        ...card,
+        id: newId,
+        date: new Date().toISOString().split('T')[0], // save date without time
+      }
+      lists.value[editingListIndex.value].cards.push(newCard)
     } else {
       // modify card
       const cardIndex = lists.value[editingListIndex.value].cards.findIndex(
