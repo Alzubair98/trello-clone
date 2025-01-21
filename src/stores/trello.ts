@@ -57,7 +57,10 @@ export const useTrelloStore = defineStore('trello', () => {
         (cardOnList) => cardOnList.id === card.id,
       )
       if (cardIndex != -1) {
-        lists.value[editingListIndex.value].cards[cardIndex] = card
+        lists.value[editingListIndex.value].cards[cardIndex] = {
+          ...card,
+          date: new Date().toISOString().split('T')[0],
+        }
       }
     }
     closeModel()
