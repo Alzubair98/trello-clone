@@ -10,3 +10,9 @@ export interface List {
   title: string
   cards: Card[]
 }
+
+export interface Item {
+  label: string
+  icon: string
+  active: boolean
+}

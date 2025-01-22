@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin123",
+      "role": "root"
+    },
+    {
+      "id": 2,
+      "username": "john",
+      "password": "password123",
+      "role": "normal"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "Root Task",
+      "description": "This is a task for the root user.",
+      "date": "2025-01-21"
+    }
+  ]
+}
