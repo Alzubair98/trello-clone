@@ -35,7 +35,7 @@
           }}</span>
         </li>
       </ul>
-      <div class="border-t flex p-3">
+      <div class="border-t flex p-3" v-if="useUserStore.currentUser">
         <img
           src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
           alt=""
@@ -45,10 +45,17 @@
           class="flex justify-between items-center w-52 ml-3 overflow-hidden transition-all"
           :class="{ 'w-0': expand }"
         >
-          <div class="leading-4" v-if="useUserStore.currentUser">
+          <div class="leading-4">
             <h4 class="font-semibold">{{ useUserStore.currentUser.username }}</h4>
             <span class="text-xs text-gray-600">zubairsk53@gmail.com</span>
           </div>
+        </div>
+      </div>
+      <div class="border-t flex p-3" v-else>
+        <div
+          class="border rounded-lg p-2 hover:bg-indigo-50 text-indigo-800 cursor-pointer transition-all duration-300 ease-in-out"
+        >
+          Sign In
         </div>
       </div>
     </nav>
