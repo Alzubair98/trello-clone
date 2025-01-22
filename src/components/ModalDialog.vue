@@ -56,7 +56,7 @@ const trelloStore = useTrelloStore()
 
 const titleInput = ref<HTMLInputElement | null>(null)
 const modalElement = ref<HTMLDivElement | null>(null)
-const localCard = ref<Card>({ id: 0, title: '', description: '' })
+const localCard = ref<Card>({ id: 0, title: '', description: '', date: '' })
 const { activate, deactivate } = useFocusTrap(modalElement)
 
 const save = (card: Card) => {
@@ -69,7 +69,7 @@ watch(
     if (newCard) {
       localCard.value = { ...newCard }
     } else {
-      localCard.value = { id: 0, title: '', description: '' }
+      localCard.value = { id: 0, title: '', description: '', date: '' }
     }
   },
   { immediate: true },
@@ -84,6 +84,12 @@ watch(
       titleInput.value?.focus()
     } else {
       deactivate()
+      localCard.value = {
+        id: 0,
+        title: '',
+        description: '',
+        date: '',
+      }
     }
   },
 )
