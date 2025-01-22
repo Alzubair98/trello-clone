@@ -16,3 +16,9 @@ export interface Item {
   icon: string
   active: boolean
 }
+
+export interface currentUser {
+  id: number
+  username: string
+  role: string
+}

@@ -45,8 +45,8 @@
           class="flex justify-between items-center w-52 ml-3 overflow-hidden transition-all"
           :class="{ 'w-0': expand }"
         >
-          <div class="leading-4">
-            <h4 class="font-semibold">Alzubair</h4>
+          <div class="leading-4" v-if="useUserStore.currentUser">
+            <h4 class="font-semibold">{{ useUserStore.currentUser.username }}</h4>
             <span class="text-xs text-gray-600">zubairsk53@gmail.com</span>
           </div>
         </div>
@@ -59,6 +59,7 @@
 // import
 import type { Item } from '../types'
 import { ref } from 'vue'
+import { useUserStore } from '../stores/userStore'
 
 // data
 const itemsList = ref<Item[]>([

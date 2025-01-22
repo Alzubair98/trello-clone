@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type { currentUser } from '@/types'
 
 export const useUserStore = defineStore('user', () => {
   // data
-  const currentUser = ref<{ id: number; username: string; role: string } | null>(null)
+  const currentUser = ref<currentUser | null>(null)
   const isLoggedIn = () => !!currentUser.value
 
   // methods
