@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { Card, List } from '../types'
-import { reactive, ref, computed } from 'vue'
+import { ref, computed } from 'vue'
 
 export const useTrelloStore = defineStore('trello', () => {
   // default data
@@ -48,7 +48,7 @@ export const useTrelloStore = defineStore('trello', () => {
       const newCard = {
         ...card,
         id: newId,
-        date: new Date().toISOString().split('T')[0], // save date without time
+        date: 'Created at ' + new Date().toISOString().split('T')[0], // save date without time
       }
       lists.value[editingListIndex.value].cards.push(newCard)
     } else {
@@ -59,7 +59,7 @@ export const useTrelloStore = defineStore('trello', () => {
       if (cardIndex != -1) {
         lists.value[editingListIndex.value].cards[cardIndex] = {
           ...card,
-          date: new Date().toISOString().split('T')[0],
+          date: `Updated at ${new Date().toISOString().split('T')[0]}`,
         }
       }
     }

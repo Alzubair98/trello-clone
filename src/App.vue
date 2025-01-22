@@ -32,7 +32,7 @@
                 </div>
               </div>
               <div class="text-sm mt-2 text-gray-400" @click.self="openModal(listIndex, element)">
-                Created at {{ element.date ? element.date : 'No date available' }}
+                {{ element.date ? element.date : 'No date available' }}
               </div>
             </div>
           </template>
